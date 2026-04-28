@@ -14,27 +14,69 @@
         android:gravity="center"
         android:padding="16dp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
+    <!-- 批量操作栏 -->
     <LinearLayout
-        android:id="@+id/empty_view"
+        android:id="@+id/batch_action_bar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="#F5F5F5"
         android:visibility="gone">
 
         <TextView
+            android:id="@+id/tv_selected_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="已选择 0 项"
+            android:gravity="center_vertical"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btn_batch_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="暂无历史记录"
-            android:textSize="16sp"
-            android:textColor="#999999" />
+            android:text="删除"
+            android:textColor="@android:color/holo_red_dark"
+            style="@style/Widget.AppCompat.Button.Borderless" />
+
+        <Button
+            android:id="@+id/btn_batch_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="取消"
+            android:textColor="@android:color/black"
+            style="@style/Widget.AppCompat.Button.Borderless" />
     </LinearLayout>
+
+    <!-- 使用 FrameLayout 包裹 RecyclerView 和空视图 -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="暂无历史记录"
+                android:textSize="16sp"
+                android:textColor="#999999" />
+        </LinearLayout>
+
+    </FrameLayout>
 
 </LinearLayout>
