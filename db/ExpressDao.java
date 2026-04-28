@@ -34,6 +34,63 @@ public class ExpressDao {
         return id;
     }
 
+    // 批量添加快递
+    public int addExpressList(List<Express> list) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int successCount = 0;
+        db.beginTransaction();
+        try {
+            for (Express express : list) {
+                ContentValues values = new ContentValues();
+                values.put(DBHelper.COLUMN_TRACKING_NUMBER, express.getTrackingNumber());
+                values.put(DBHelper.COLUMN_COMPANY, express.getCompany());
+                values.put(DBHelper.COLUMN_PICKUP_CODE, express.getPickupCode());
+                values.put(DBHelper.COLUMN_EXPECTED_TIME, express.getExpectedTime());
+                values.put(DBHelper.COLUMN_STATUS, express.getStatus());
+                values.put(DBHelper.COLUMN_CREATE_TIME, express.getCreateTime());
+                values.put(DBHelper.COLUMN_PICKUP_TIME, express.getPickupTime());
+                long id = db.insert(DBHelper.TABLE_EXPRESS, null, values);
+                if (id > 0) successCount++;
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+        db.close();
+        return successCount;
+    }
+
+    // 获取所有快递（用于备份）
+    public List<Express> getAllExpresses() {
+        List<Express> list = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(DBHelper.TABLE_EXPRESS, null, null, null,
+                null, null, DBHelper.COLUMN_ID + " ASC");
+
+        while (cursor.moveToNext()) {
+            Express express = new Express();
+            express.setId(cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_ID)));
+            express.setTrackingNumber(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_TRACKING_NUMBER)));
+            express.setCompany(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_COMPANY)));
+            express.setPickupCode(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_PICKUP_CODE)));
+            express.setExpectedTime(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_EXPECTED_TIME)));
+            express.setStatus(cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_STATUS)));
+            express.setCreateTime(cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_CREATE_TIME)));
+            express.setPickupTime(cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_PICKUP_TIME)));
+            list.add(express);
+        }
+        cursor.close();
+        db.close();
+        return list;
+    }
+
+    // 清空所有数据
+    public void clearAllData() {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.delete(DBHelper.TABLE_EXPRESS, null, null);
+        db.close();
+    }
+
     // 获取所有待取件快递
     public List<Express> getPendingExpresses() {
         List<Express> list = new ArrayList<>();
@@ -45,14 +102,14 @@ public class ExpressDao {
 
         while (cursor.moveToNext()) {
             Express express = new Express();
-            express.setId(cursor.getInt(cursor.getColumnIndex(DBHelper.COLUMN_ID)));
-            express.setTrackingNumber(cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_TRACKING_NUMBER)));
-            express.setCompany(cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_COMPANY)));
-            express.setPickupCode(cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_PICKUP_CODE)));
-            express.setExpectedTime(cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_EXPECTED_TIME)));
-            express.setStatus(cursor.getInt(cursor.getColumnIndex(DBHelper.COLUMN_STATUS)));
-            express.setCreateTime(cursor.getLong(cursor.getColumnIndex(DBHelper.COLUMN_CREATE_TIME)));
-            express.setPickupTime(cursor.getLong(cursor.getColumnIndex(DBHelper.COLUMN_PICKUP_TIME)));
+            express.setId(cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_ID)));
+            express.setTrackingNumber(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_TRACKING_NUMBER)));
+            express.setCompany(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_COMPANY)));
+            express.setPickupCode(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_PICKUP_CODE)));
+            express.setExpectedTime(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_EXPECTED_TIME)));
+            express.setStatus(cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_STATUS)));
+            express.setCreateTime(cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_CREATE_TIME)));
+            express.setPickupTime(cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_PICKUP_TIME)));
             list.add(express);
         }
         cursor.close();
@@ -71,14 +128,14 @@ public class ExpressDao {
 
         while (cursor.moveToNext()) {
             Express express = new Express();
-            express.setId(cursor.getInt(cursor.getColumnIndex(DBHelper.COLUMN_ID)));
-            express.setTrackingNumber(cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_TRACKING_NUMBER)));
-            express.setCompany(cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_COMPANY)));
-            express.setPickupCode(cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_PICKUP_CODE)));
-            express.setExpectedTime(cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_EXPECTED_TIME)));
-            express.setStatus(cursor.getInt(cursor.getColumnIndex(DBHelper.COLUMN_STATUS)));
-            express.setCreateTime(cursor.getLong(cursor.getColumnIndex(DBHelper.COLUMN_CREATE_TIME)));
-            express.setPickupTime(cursor.getLong(cursor.getColumnIndex(DBHelper.COLUMN_PICKUP_TIME)));
+            express.setId(cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_ID)));
+            express.setTrackingNumber(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_TRACKING_NUMBER)));
+            express.setCompany(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_COMPANY)));
+            express.setPickupCode(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_PICKUP_CODE)));
+            express.setExpectedTime(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_EXPECTED_TIME)));
+            express.setStatus(cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_STATUS)));
+            express.setCreateTime(cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_CREATE_TIME)));
+            express.setPickupTime(cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_PICKUP_TIME)));
             list.add(express);
         }
         cursor.close();
@@ -106,6 +163,7 @@ public class ExpressDao {
         db.close();
         return rows > 0;
     }
+
     // 添加快递单号唯一性检查方法
     public boolean isTrackingNumberExists(String trackingNumber) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
