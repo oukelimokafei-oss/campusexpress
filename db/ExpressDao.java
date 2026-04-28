@@ -106,4 +106,16 @@ public class ExpressDao {
         db.close();
         return rows > 0;
     }
+    // 添加快递单号唯一性检查方法
+    public boolean isTrackingNumberExists(String trackingNumber) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String selection = DBHelper.COLUMN_TRACKING_NUMBER + " = ? AND " + DBHelper.COLUMN_STATUS + " = ?";
+        String[] selectionArgs = {trackingNumber, "0"}; // 只检查待取件的快递，已取件的允许重复添加
+        Cursor cursor = db.query(DBHelper.TABLE_EXPRESS, new String[]{DBHelper.COLUMN_ID},
+                selection, selectionArgs, null, null, null);
+        boolean exists = cursor.getCount() > 0;
+        cursor.close();
+        db.close();
+        return exists;
+    }
 }
