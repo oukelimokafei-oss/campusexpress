@@ -10,75 +10,93 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tv_tracking_number"
-            android:layout_width="match_parent"
+        <!-- 复选框放在最左侧 -->
+        <CheckBox
+            android:id="@+id/checkbox_select"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="单号: "
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tv_company"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="快递: "
-            android:layout_marginTop="4dp"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/tv_pickup_code"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="取件码: "
-            android:layout_marginTop="4dp"
-            android:textSize="14sp"
-            android:textColor="#FF6B6B" />
-
-        <TextView
-            android:id="@+id/tv_expected_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="预计到达: "
-            android:layout_marginTop="4dp"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/tv_pickup_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="取件时间: "
-            android:layout_marginTop="4dp"
-            android:textSize="14sp"
-            android:textColor="#4CAF50"
+            android:layout_gravity="center_vertical"
             android:visibility="gone" />
 
+        <!-- 内容区域 -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="12dp">
 
-            <Button
-                android:id="@+id/btn_pickup"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/tv_tracking_number"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="标记取件"
-                android:layout_marginEnd="8dp"
-                android:backgroundTint="#4CAF50" />
+                android:text="单号: "
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/btn_delete"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/tv_company"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="删除"
-                android:layout_marginStart="8dp"
-                android:backgroundTint="#F44336" />
+                android:text="快递: "
+                android:layout_marginTop="4dp"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_pickup_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="取件码: "
+                android:layout_marginTop="4dp"
+                android:textSize="14sp"
+                android:textColor="#FF6B6B" />
+
+            <TextView
+                android:id="@+id/tv_expected_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="预计到达: "
+                android:layout_marginTop="4dp"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_pickup_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="取件时间: "
+                android:layout_marginTop="4dp"
+                android:textSize="14sp"
+                android:textColor="#4CAF50"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_pickup"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="标记取件"
+                    android:layout_marginEnd="8dp"
+                    android:backgroundTint="#4CAF50" />
+
+                <Button
+                    android:id="@+id/btn_delete"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="删除"
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="#F44336" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
