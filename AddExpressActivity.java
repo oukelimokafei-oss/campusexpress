@@ -1,6 +1,7 @@
 package com.example.campusexpress;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
@@ -118,8 +119,6 @@ public class AddExpressActivity extends AppCompatActivity {
         String trackingNumber = etTrackingNumber.getText().toString().trim();
         String company = companies[spCompany.getSelectedItemPosition()];
         String pickupCode = etPickupCode.getText().toString().trim();
-        //（修改前）手动输入:String expectedTime = etExpectedTime.getText().toString().trim();
-        //（修改后）控件选择：
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
         String expectedTime = sdf.format(selectedCalendar.getTime());
 
@@ -128,11 +127,28 @@ public class AddExpressActivity extends AppCompatActivity {
             return;
         }
 
+        // 新增：检查单号是否已存在
+        if (expressDao.isTrackingNumberExists(trackingNumber)) {
+            new AlertDialog.Builder(this)
+                    .setTitle("单号重复")
+                    .setMessage("快递单号 " + trackingNumber + " 已存在且尚未取件，是否继续添加？")
+                    .setPositiveButton("继续添加", (dialog, which) -> {
+                        saveExpressToDatabase(trackingNumber, company, pickupCode, expectedTime);
+                    })
+                    .setNegativeButton("取消", null)
+                    .show();
+            return;
+        }
+
+        saveExpressToDatabase(trackingNumber, company, pickupCode, expectedTime);
+    }
+
+    // 将原保存逻辑抽取为独立方法
+    private void saveExpressToDatabase(String trackingNumber, String company, String pickupCode, String expectedTime) {
         Express express = new Express(trackingNumber, company, pickupCode, expectedTime);
         long id = expressDao.addExpress(express);
 
         if (id > 0) {
-            // 根据预计到达时间设置提醒
             setupReminderByTime(trackingNumber, company, pickupCode, expectedTime);
             Toast.makeText(this, "添加成功，已设置到达提醒", Toast.LENGTH_LONG).show();
             setResult(RESULT_OK);
